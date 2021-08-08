@@ -2,8 +2,13 @@ from gitlabform.gitlab.projects import GitLabProjects
 
 
 class GitLabProjectDeployKeys(GitLabProjects):
-    def post_deploy_key(self, project_and_group_name, deploy_key):
-        # deploy_key has to be like this:
+    def get_deploy_keys(self, project_and_group_name):
+        return self._make_requests_to_api(
+            "projects/%s/deploy_keys", project_and_group_name
+        )
+
+    def post_deploy_key(self, project_and_group_name, deploy_key_in_config):
+        # deploy_key_in_config has to be like this:
         # {
         #     'title': title,
         #     'key': key,
@@ -14,27 +19,24 @@ class GitLabProjectDeployKeys(GitLabProjects):
             "projects/%s/deploy_keys",
             project_and_group_name,
             "POST",
-            deploy_key,
+            deploy_key_in_config,
             expected_codes=201,
         )
 
-    def get_deploy_keys(self, project_and_group_name):
-        return self._make_requests_to_api(
-            "projects/%s/deploy_keys", project_and_group_name
-        )
-
-    def put_deploy_key(self, project_and_group_name, deploy_key):
-        return self._make_requests_to_api(
-            "projects/%s/deploy_keys",
-            project_and_group_name,
-            "PUT",
-            deploy_key,
-        )
-
-    def delete_deploy_key(self, project_and_group_name, id):
+    def put_deploy_key(
+        self, project_and_group_name, deploy_key_in_gitlab, deploy_key_in_config
+    ):
         return self._make_requests_to_api(
             "projects/%s/deploy_keys/%s",
-            (project_and_group_name, id),
+            (project_and_group_name, deploy_key_in_gitlab["id"]),
+            "PUT",
+            deploy_key_in_config,
+        )
+
+    def delete_deploy_key(self, project_and_group_name, deploy_key_in_config):
+        return self._make_requests_to_api(
+            "projects/%s/deploy_keys/%s",
+            (project_and_group_name, deploy_key_in_config["id"]),
             method="DELETE",
             expected_codes=[204, 404],
         )
