@@ -10,6 +10,8 @@ from gitlabform.gitlab.members import GitLabMembers
 from gitlabform.gitlab.merge_requests import GitLabMergeRequests
 from gitlabform.gitlab.pipelines import GitLabPipelines
 from gitlabform.gitlab.project_badges import GitLabProjectBadges
+from gitlabform.gitlab.project_deploy_keys import GitLabProjectDeployKeys
+from gitlabform.gitlab.project_secret_variables import GitLabProjectSecretVariables
 from gitlabform.gitlab.repositories import GitLabRepositories
 from gitlabform.gitlab.schedules import GitLabPipelineSchedules
 from gitlabform.gitlab.services import GitLabServices
@@ -47,5 +49,7 @@ class GitLab(
     GitLabUsers,
     GitLabPipelineSchedules,
     GitLabProjectBadges,
+    GitLabProjectDeployKeys,
+    GitLabProjectSecretVariables,
 ):
     pass
